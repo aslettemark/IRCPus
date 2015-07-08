@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.kitteh.irc</groupId>
             <artifactId>client-lib</artifactId>
-            <version>0.2.7</version>
+            <version>0.2.8-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
