@@ -24,6 +24,8 @@
 
 package net.aslettemark.ircpus;
 
+import net.aslettemark.ircpus.command.CommandManager;
+import net.aslettemark.ircpus.command.PingCommand;
 import net.aslettemark.ircpus.config.Config;
 import net.aslettemark.ircpus.config.ConnectionConfig;
 import net.aslettemark.ircpus.listener.CommandListener;
@@ -40,6 +42,7 @@ public class IRCPus {
     public Client client;
     private HashMap<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
+    private CommandManager commandManager;
 
     public IRCPus() {
         File connection = new File(Strings.CONFIG_CONNECTION);
@@ -52,10 +55,17 @@ public class IRCPus {
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
         this.client = new ClientBuilder().nick(nick).server(server).build();
 
+        //TODO: actual client adding from config
         this.client.addChannel("#aksels");
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
         this.client.getEventManager().registerEventListener(new CommandListener(this));
+
+        this.commandManager = new CommandManager(this);
+        this.getCommandManager().registerCommand("ping", new PingCommand());
     }
 
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
 }

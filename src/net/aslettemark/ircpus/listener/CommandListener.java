@@ -38,6 +38,6 @@ public class CommandListener {
 
     @Handler
     public void onCommand(CommandEvent event) {
-        System.out.println("FIRED! " + event.getActor().getNick() + event.getCommand());
+        this.pus.getCommandManager().getExecutor(event.getCommand().split(" ")[0]).execute(event);
     }
 }

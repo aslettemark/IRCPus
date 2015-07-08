@@ -22,39 +22,28 @@
  * SOFTWARE.
  */
 
-package net.aslettemark.ircpus.listener;
+package net.aslettemark.ircpus.command;
 
-import net.aslettemark.ircpus.Event.CommandEvent;
 import net.aslettemark.ircpus.IRCPus;
-import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
-import org.kitteh.irc.client.library.event.helper.MessageEvent;
-import org.kitteh.irc.client.library.event.user.PrivateMessageEvent;
-import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
 
-public class MessageListener {
+import java.util.HashMap;
+
+public class CommandManager {
 
     private IRCPus pus;
+    private HashMap<String, CommandExecutor> executors;
 
-    public MessageListener(IRCPus pus) {
+    public CommandManager(IRCPus pus) {
         this.pus = pus;
+        this.executors = new HashMap<>();
     }
 
-    @Handler
-    public void onChannelMessage(ChannelMessageEvent event) {
-        String message = event.getMessage();
-        if(message.startsWith(".") && message.length() > 1) {
-            String command = message.replaceFirst(".", "");
-            pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), event.getChannel(), command, this.pus));
-        }
+    public void registerCommand(String command, CommandExecutor executor) {
+        this.executors.put(command, executor);
     }
 
-    @Handler
-    public void onPrivateMessage(PrivateMessageEvent event) {
-
+    public CommandExecutor getExecutor(String command) {
+        return this.executors.get(command);
     }
 
-    @Handler
-    public void onMessage(MessageEvent event) {
-
-    }
 }
