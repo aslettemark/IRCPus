@@ -26,14 +26,18 @@ package net.aslettemark.ircpus.Event;
 
 import org.kitteh.irc.client.library.Client;
 import org.kitteh.irc.client.library.element.User;
-import org.kitteh.irc.client.library.event.abstractbase.ActorMessageEventBase;
 
-public class CommandEvent extends ActorMessageEventBase<User> {
+public class CommandEvent {
 
+    private Client client;
+    private User user;
+    private String message;
     private String command;
 
     public CommandEvent(Client client, User user, String message, String command) {
-        super(client, user, message);
+        this.client = client;
+        this.user = user;
+        this.message = message;
         this.command = command;
     }
 
@@ -41,7 +45,19 @@ public class CommandEvent extends ActorMessageEventBase<User> {
         return command;
     }
 
-    public void setCommand(String command) {
-        this.command = command;
+    public Client getClient() {
+        return client;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public User getActor() {
+        return this.getUser();
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

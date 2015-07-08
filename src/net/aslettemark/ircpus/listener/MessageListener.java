@@ -26,7 +26,6 @@ package net.aslettemark.ircpus.listener;
 
 import net.aslettemark.ircpus.Event.CommandEvent;
 import net.aslettemark.ircpus.IRCPus;
-import org.kitteh.irc.client.library.event.channel.ChannelCTCPEvent;
 import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
 import org.kitteh.irc.client.library.event.helper.MessageEvent;
 import org.kitteh.irc.client.library.event.user.PrivateMessageEvent;
