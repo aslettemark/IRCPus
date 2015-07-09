@@ -49,8 +49,8 @@ public class IRCPus {
         this.configs.put(Strings.CONFIG_CONNECTION, new ConnectionConfig(connection));
         this.connectionConfig = (ConnectionConfig) this.configs.get(Strings.CONFIG_CONNECTION);
 
-        String nick = this.connectionConfig.fetchString("nickname");
-        String server = this.connectionConfig.fetchString("server");
+        String nick = this.connectionConfig.fetchString(Strings.CONFIG_KEY_NICKNAME);
+        String server = this.connectionConfig.fetchString(Strings.CONFIG_KEY_SERVER);
         Sanity.nullCheck(nick, Strings.ERROR_BAD_CONNECTION_CONFIG);
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
         this.client = new ClientBuilder().nick(nick).server(server).build();
@@ -65,7 +65,10 @@ public class IRCPus {
         this.getCommandManager().registerCommand("ping", new PingCommand());
     }
 
+    /**
+     * @return The command manager
+     */
     public CommandManager getCommandManager() {
-        return commandManager;
+        return this.commandManager;
     }
 }

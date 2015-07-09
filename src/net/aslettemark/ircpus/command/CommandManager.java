@@ -38,6 +38,11 @@ public class CommandManager {
         this.executors = new HashMap<>();
     }
 
+    /**
+     * Creates an entry for the specified command with the specified CommandExecutor
+     * @param command The command to register
+     * @param executor The CommandExecutor to associate with the command
+     */
     public void registerCommand(String command, CommandExecutor executor) {
         this.executors.put(command, executor);
     }
