@@ -50,7 +50,7 @@ public class MessageListener {
 
     @Handler
     public void onPrivateMessage(PrivateMessageEvent event) {
-
+        this.pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), null, event.getMessage(), this.pus));
     }
 
     @Handler

@@ -27,6 +27,7 @@ package net.aslettemark.ircpus.Event;
 import net.aslettemark.ircpus.IRCPus;
 import org.kitteh.irc.client.library.Client;
 import org.kitteh.irc.client.library.element.Channel;
+import org.kitteh.irc.client.library.element.MessageReceiver;
 import org.kitteh.irc.client.library.element.User;
 
 public class CommandEvent {
@@ -36,6 +37,7 @@ public class CommandEvent {
     private String command;
     private IRCPus pus;
     private Channel channel;
+    private MessageReceiver feedbackReciever;
 
     public CommandEvent(Client client, User user, Channel channel, String command, IRCPus pus) {
         this.client = client;
@@ -43,6 +45,11 @@ public class CommandEvent {
         this.command = command;
         this.pus = pus;
         this.channel = channel;
+        if(channel == null) {
+            this.feedbackReciever = user;
+        } else {
+            this.feedbackReciever = channel;
+        }
     }
 
     public String getCommand() {
@@ -67,5 +74,9 @@ public class CommandEvent {
 
     public Channel getChannel() {
         return channel;
+    }
+
+    public MessageReceiver getFeedbackReciever() {
+        return feedbackReciever;
     }
 }
