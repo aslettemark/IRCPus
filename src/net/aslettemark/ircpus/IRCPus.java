@@ -43,6 +43,7 @@ public class IRCPus {
     private HashMap<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
     private CommandManager commandManager;
+    private AccessControl accessControl;
 
     public IRCPus() {
         File connection = new File(Strings.CONFIG_CONNECTION);
@@ -63,6 +64,8 @@ public class IRCPus {
 
         this.commandManager = new CommandManager(this);
         this.getCommandManager().registerCommand("ping", new PingCommand());
+
+        this.accessControl = new AccessControl(this);
     }
 
     /**
@@ -70,5 +73,12 @@ public class IRCPus {
      */
     public CommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    /**
+     * @return The access control class
+     */
+    public AccessControl getAccessControl() {
+        return accessControl;
     }
 }
