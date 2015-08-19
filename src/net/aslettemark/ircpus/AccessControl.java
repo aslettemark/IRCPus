@@ -55,7 +55,7 @@ public class AccessControl {
      * @return Wether the User has admin access to the "pusekatt"
      */
     public boolean isAdmin(User user) {
-        return this.isAdmin(user.getAccount());
+        return this.isAdmin(user.getAccount().get());
     }
 
     /**
@@ -88,7 +88,7 @@ public class AccessControl {
      */
     public void addAdmin(User user) {
         Sanity.nullCheck(user.getAccount(), "Cannot give admin rights to users without accounts");
-        this.admins.add(user.getAccount());
+        this.admins.add(user.getAccount().get());
     }
 
     /**
