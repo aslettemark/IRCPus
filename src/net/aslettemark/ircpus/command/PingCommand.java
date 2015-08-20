@@ -24,7 +24,7 @@
 
 package net.aslettemark.ircpus.command;
 
-import net.aslettemark.ircpus.Event.CommandEvent;
+import net.aslettemark.ircpus.event.CommandEvent;
 
 public class PingCommand implements CommandExecutor {
 

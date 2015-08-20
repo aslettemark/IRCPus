@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.aslettemark.ircpus.Event;
+package net.aslettemark.ircpus.event;
 
 import net.aslettemark.ircpus.IRCPus;
 import org.kitteh.irc.client.library.Client;
