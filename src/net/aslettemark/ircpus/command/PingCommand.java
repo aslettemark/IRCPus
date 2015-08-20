@@ -30,6 +30,6 @@ public class PingCommand implements CommandExecutor {
 
     @Override
     public void execute(CommandEvent event) {
-        event.getFeedbackReciever().sendMessage(event.getActor().getNick() + ": Pong!");
+        event.getFeedbackReceiver().sendMessage(event.getActor().getNick() + ": Pong!");
     }
 }

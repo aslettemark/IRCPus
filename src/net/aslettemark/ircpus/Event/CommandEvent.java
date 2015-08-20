@@ -37,7 +37,7 @@ public class CommandEvent {
     private String command;
     private IRCPus pus;
     private Channel channel;
-    private MessageReceiver feedbackReciever;
+    private MessageReceiver feedbackReceiver;
 
     public CommandEvent(Client client, User user, Channel channel, String command, IRCPus pus) {
         this.client = client;
@@ -46,9 +46,9 @@ public class CommandEvent {
         this.pus = pus;
         this.channel = channel;
         if(channel == null) {
-            this.feedbackReciever = user;
+            this.feedbackReceiver = user;
         } else {
-            this.feedbackReciever = channel;
+            this.feedbackReceiver = channel;
         }
     }
 
@@ -76,7 +76,7 @@ public class CommandEvent {
         return channel;
     }
 
-    public MessageReceiver getFeedbackReciever() {
-        return feedbackReciever;
+    public MessageReceiver getFeedbackReceiver() {
+        return feedbackReceiver;
     }
 }
