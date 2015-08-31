@@ -38,6 +38,7 @@ public class CommandEvent {
     private IRCPus pus;
     private Channel channel;
     private MessageReceiver feedbackReceiver;
+    private boolean privileged;
 
     public CommandEvent(Client client, User user, Channel channel, String command, IRCPus pus) {
         this.client = client;
@@ -45,10 +46,13 @@ public class CommandEvent {
         this.command = command;
         this.pus = pus;
         this.channel = channel;
+        this.feedbackReceiver = channel;
+        this.privileged = false;
         if(channel == null) {
             this.feedbackReceiver = user;
-        } else {
-            this.feedbackReceiver = channel;
+        }
+        if(this.pus.getAccessControl().isAdmin(channel) || this.pus.getAccessControl().isAdmin(user)) {
+            this.privileged = true;
         }
     }
 
@@ -78,5 +82,9 @@ public class CommandEvent {
 
     public MessageReceiver getFeedbackReceiver() {
         return feedbackReceiver;
+    }
+
+    public boolean isPrivileged() {
+        return privileged;
     }
 }
