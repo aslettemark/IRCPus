@@ -29,6 +29,7 @@ public class Strings {
     public static final String CONFIG_CONNECTION = "connection.yaml";
     public static final String CONFIG_KEY_SERVER = "server";
     public static final String CONFIG_KEY_NICKNAME = "nickname";
+    public static final String CONFIG_KEY_CHANNELS = "channels";
 
     public static final String ERROR_BAD_CONNECTION_CONFIG = "There is something wrong with your connection.yaml";
 

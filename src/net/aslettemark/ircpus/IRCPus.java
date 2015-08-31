@@ -56,8 +56,10 @@ public class IRCPus {
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
         this.client = Client.builder().nick(nick).server(server).build();
 
-        //TODO: actual client adding from config
-        this.client.addChannel("#aksels");
+        for(String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
+            this.client.addChannel(s.replace("\\", ""));
+            System.out.println("Added " + s.replace("\\", ""));
+        }
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
         this.client.getEventManager().registerEventListener(new CommandListener(this));

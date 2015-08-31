@@ -75,8 +75,7 @@ public class ConnectionConfig extends HashMap implements Config {
             values = (HashMap<String, String>) yaml.load(new FileInputStream(this.file));
 
             for (String key : values.keySet()) {
-                System.out.print(key + ": ");
-                System.out.println(values.get(key));
+                System.out.println(key + ": " + values.get(key));
                 this.put(key, values.get(key));
             }
         } catch (FileNotFoundException e) {
