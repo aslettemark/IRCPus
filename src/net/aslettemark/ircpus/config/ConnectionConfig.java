@@ -27,10 +27,7 @@ package net.aslettemark.ircpus.config;
 import net.aslettemark.ircpus.Strings;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
 
@@ -87,6 +84,21 @@ public class ConnectionConfig extends HashMap implements Config {
                 System.exit(1);
             }
             System.exit(0);
+        }
+    }
+
+    public boolean save() {
+        try {
+            FileWriter writer = new FileWriter(this.file);
+            (new Yaml()).dump(this, writer);
+            writer.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

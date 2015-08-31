@@ -66,6 +66,12 @@ public interface Config {
      */
     public abstract void load();
 
+    /**
+     * Saves the config file
+     * @return Wether the write was successful
+     */
+    public abstract boolean save();
+
     public abstract void setSaveLocation(File file);
 
     public abstract File getSaveLocation();

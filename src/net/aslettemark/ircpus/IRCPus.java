@@ -83,4 +83,8 @@ public class IRCPus {
     public AccessControl getAccessControl() {
         return accessControl;
     }
+
+    public Config getConfig(String file) {
+        return this.configs.get(file);
+    }
 }
