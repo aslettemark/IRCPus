@@ -101,10 +101,7 @@ public class NoteHandler {
     }
 
     public boolean hasNotes(String nick) {
-        if (this.getNotes(nick).size() > 0) {
-            return true;
-        }
-        return false;
+        return this.getNotes(nick).size() > 0;
     }
 
     public boolean hasNotes(User user) {
