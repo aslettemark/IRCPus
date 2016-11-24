@@ -48,10 +48,10 @@ public class CommandEvent {
         this.channel = channel;
         this.feedbackReceiver = channel;
         this.privileged = false;
-        if(channel == null) {
+        if (channel == null) {
             this.feedbackReceiver = user;
         }
-        if(this.pus.getAccessControl().isAdmin(channel) || this.pus.getAccessControl().isAdmin(user)) {
+        if (this.pus.getAccessControl().isAdmin(channel) || this.pus.getAccessControl().isAdmin(user)) {
             this.privileged = true;
         }
     }

@@ -22,22 +22,33 @@
  * SOFTWARE.
  */
 
-package net.aslettemark.ircpus.listener;
+package net.aslettemark.ircpus.element;
 
-import net.aslettemark.ircpus.IRCPus;
-import net.aslettemark.ircpus.event.CommandEvent;
-import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
+public class Note {
 
-public class CommandListener {
+    private String sender;
+    private String target;
+    private String content;
 
-    public IRCPus pus;
-
-    public CommandListener(IRCPus pus) {
-        this.pus = pus;
+    public Note(String sender, String target, String content) {
+        this.sender = sender;
+        this.target = target;
+        this.content = content;
     }
 
-    @Handler
-    public void onCommand(CommandEvent event) {
-        this.pus.getCommandManager().getExecutor(event.getCommand().split(" ")[0].toLowerCase()).execute(event);
+    public String getPrintOut() {
+        return "<" + this.getSender() + "> " + this.getContent();
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

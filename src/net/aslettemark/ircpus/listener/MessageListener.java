@@ -24,12 +24,17 @@
 
 package net.aslettemark.ircpus.listener;
 
-import net.aslettemark.ircpus.event.CommandEvent;
 import net.aslettemark.ircpus.IRCPus;
+import net.aslettemark.ircpus.element.Note;
+import net.aslettemark.ircpus.event.CommandEvent;
+import org.kitteh.irc.client.library.element.MessageReceiver;
+import org.kitteh.irc.client.library.element.User;
 import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
 import org.kitteh.irc.client.library.event.helper.MessageEvent;
 import org.kitteh.irc.client.library.event.user.PrivateMessageEvent;
 import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
+
+import java.util.ArrayList;
 
 public class MessageListener {
 
@@ -42,9 +47,14 @@ public class MessageListener {
     @Handler
     public void onChannelMessage(ChannelMessageEvent event) {
         String message = event.getMessage();
-        if(message.startsWith(".") && message.length() > 1) {
+
+        if (this.pus.getNoteHandler().hasNotes(event.getActor().getNick())) {
+            this.sendNotes(event.getActor(), event.getChannel());
+        }
+
+        if (message.startsWith(".") && message.length() > 1) {
             String command = message.replaceFirst(".", "");
-            if(this.pus.getCommandManager().getExecutor(command.split(" ")[0]) != null) {
+            if (this.pus.getCommandManager().getExecutor(command.split(" ")[0].toLowerCase()) != null) {
                 pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), event.getChannel(), command, this.pus));
             }
         }
@@ -52,7 +62,11 @@ public class MessageListener {
 
     @Handler
     public void onPrivateMessage(PrivateMessageEvent event) {
-        if(this.pus.getCommandManager().getExecutor(event.getMessage().split(" ")[0]) != null) {
+        if (this.pus.getNoteHandler().hasNotes(event.getActor().getNick())) {
+            this.sendNotes(event.getActor(), event.getActor());
+        }
+
+        if (this.pus.getCommandManager().getExecutor(event.getMessage().split(" ")[0].toLowerCase()) != null) {
             this.pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), null, event.getMessage(), this.pus));
         }
     }
@@ -60,5 +74,22 @@ public class MessageListener {
     @Handler
     public void onMessage(MessageEvent event) {
 
+    }
+
+    /**
+     * @param user     The target of the notes
+     * @param receiver The MessageReceiver to print the notes to
+     */
+    public void sendNotes(User user, MessageReceiver receiver) {
+        ArrayList<Note> notes = this.pus.getNoteHandler().getNotes(user);
+        receiver.sendMessage(user.getNick() + ": You have notes!");
+        if (notes.size() > 4 && user != receiver) {
+            receiver.sendMessage("Too many notes! Sending in a private message!");
+            receiver = user;
+        }
+        for (Note n : notes) {
+            receiver.sendMessage(user.getNick() + ": " + n.getPrintOut());
+            this.pus.getNoteHandler().removeNote(n);
+        }
     }
 }

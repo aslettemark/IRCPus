@@ -102,11 +102,11 @@ public class ConnectionConfig extends HashMap implements Config {
         }
     }
 
-    public void setSaveLocation(File file) {
-        this.file = file;
-    }
-
     public File getSaveLocation() {
         return file;
+    }
+
+    public void setSaveLocation(File file) {
+        this.file = file;
     }
 }

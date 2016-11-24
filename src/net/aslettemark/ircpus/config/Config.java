@@ -31,13 +31,15 @@ public interface Config {
 
     /**
      * Set a new value for a key
-     * @param key key
+     *
+     * @param key   key
      * @param value new value
      */
     void set(String key, Object value);
 
     /**
      * Get the value of a key
+     *
      * @param key key
      * @return Value matching key
      */
@@ -50,13 +52,15 @@ public interface Config {
 
     /**
      * Wipes the value of a key
-     * @param key key
+     *
+     * @param key   key
      * @param value value to wipe
      */
     void wipe(String key, Object value);
 
     /**
      * Get the values used in the config for saving
+     *
      * @return a hashmap containing all the necessary keys and values
      */
     HashMap<String, Object> getSaveValues();
@@ -68,11 +72,12 @@ public interface Config {
 
     /**
      * Saves the config file
+     *
      * @return Wether the write was successful
      */
     boolean save();
 
-    void setSaveLocation(File file);
-
     File getSaveLocation();
+
+    void setSaveLocation(File file);
 }

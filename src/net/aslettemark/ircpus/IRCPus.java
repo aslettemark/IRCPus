@@ -25,9 +25,11 @@
 package net.aslettemark.ircpus;
 
 import net.aslettemark.ircpus.command.CommandManager;
+import net.aslettemark.ircpus.command.NoteCommand;
 import net.aslettemark.ircpus.command.PingCommand;
 import net.aslettemark.ircpus.config.Config;
 import net.aslettemark.ircpus.config.ConnectionConfig;
+import net.aslettemark.ircpus.element.Note;
 import net.aslettemark.ircpus.listener.CommandListener;
 import net.aslettemark.ircpus.listener.MessageListener;
 import org.kitteh.irc.client.library.Client;
@@ -35,15 +37,18 @@ import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
 import org.kitteh.irc.client.library.util.Sanity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IRCPus {
 
     public Client client;
+    public ArrayList<Note> notes;
     private HashMap<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
     private CommandManager commandManager;
     private AccessControl accessControl;
+    private NoteHandler noteHandler = new NoteHandler(this);
 
     public IRCPus() {
         File connection = new File(Strings.CONFIG_CONNECTION);
@@ -52,6 +57,7 @@ public class IRCPus {
 
         String nick = this.connectionConfig.fetchString(Strings.CONFIG_KEY_NICKNAME);
         String server = this.connectionConfig.fetchString(Strings.CONFIG_KEY_SERVER);
+        Strings.NOTES_FILE = server + ".notes";
         Sanity.nullCheck(nick, Strings.ERROR_BAD_CONNECTION_CONFIG);
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
 
@@ -62,7 +68,7 @@ public class IRCPus {
 
         this.client = builder.build();
 
-        for(String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
+        for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
             this.client.addChannel(s.replace("\\", ""));
             System.out.println("Added " + s.replace("\\", ""));
         }
@@ -72,8 +78,11 @@ public class IRCPus {
 
         this.commandManager = new CommandManager(this);
         this.getCommandManager().registerCommand("ping", new PingCommand());
+        this.getCommandManager().registerCommand("note", new NoteCommand());
 
         this.accessControl = new AccessControl(this);
+
+        this.notes = this.getNoteHandler().loadNotes();
     }
 
     /**
@@ -92,5 +101,9 @@ public class IRCPus {
 
     public Config getConfig(String file) {
         return this.configs.get(file);
+    }
+
+    public NoteHandler getNoteHandler() {
+        return noteHandler;
     }
 }

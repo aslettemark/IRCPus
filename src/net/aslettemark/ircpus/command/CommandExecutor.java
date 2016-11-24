@@ -30,6 +30,7 @@ public interface CommandExecutor {
 
     /**
      * Processes and executes CommandEvents
+     *
      * @param event The CommandEvent to execute/process
      */
     void execute(CommandEvent event);

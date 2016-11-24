@@ -42,6 +42,7 @@ public class AccessControl {
 
     /**
      * Determines if an account has admin access
+     *
      * @param account The account to test
      * @return Whether the account has admin access to the "pusekatt"
      */
@@ -51,6 +52,7 @@ public class AccessControl {
 
     /**
      * Determines if a User has admin access
+     *
      * @param user The User to test
      * @return Whether the User has admin access to the "pusekatt"
      */
@@ -64,6 +66,7 @@ public class AccessControl {
 
     /**
      * Determines if a Channel has admin access
+     *
      * @param channel The Channel to test
      * @return Whether the channel is marked as an admin channel
      */
