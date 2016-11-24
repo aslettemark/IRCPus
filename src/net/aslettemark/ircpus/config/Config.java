@@ -34,45 +34,45 @@ public interface Config {
      * @param key key
      * @param value new value
      */
-    public abstract void set(String key, Object value);
+    void set(String key, Object value);
 
     /**
      * Get the value of a key
      * @param key key
      * @return Value matching key
      */
-    public abstract Object fetch(String key);
+    Object fetch(String key);
 
     /**
      * Wipes all values in the config
      */
-    public abstract void wipe();
+    void wipe();
 
     /**
      * Wipes the value of a key
      * @param key key
      * @param value value to wipe
      */
-    public abstract void wipe(String key, Object value);
+    void wipe(String key, Object value);
 
     /**
      * Get the values used in the config for saving
      * @return a hashmap containing all the necessary keys and values
      */
-    public abstract HashMap<String, Object> getSaveValues();
+    HashMap<String, Object> getSaveValues();
 
     /**
      * Loads config from file. Should be called in constructor.
      */
-    public abstract void load();
+    void load();
 
     /**
      * Saves the config file
      * @return Wether the write was successful
      */
-    public abstract boolean save();
+    boolean save();
 
-    public abstract void setSaveLocation(File file);
+    void setSaveLocation(File file);
 
-    public abstract File getSaveLocation();
+    File getSaveLocation();
 }

@@ -44,13 +44,17 @@ public class MessageListener {
         String message = event.getMessage();
         if(message.startsWith(".") && message.length() > 1) {
             String command = message.replaceFirst(".", "");
-            pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), event.getChannel(), command, this.pus));
+            if(this.pus.getCommandManager().getExecutor(command.split(" ")[0]) != null) {
+                pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), event.getChannel(), command, this.pus));
+            }
         }
     }
 
     @Handler
     public void onPrivateMessage(PrivateMessageEvent event) {
-        this.pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), null, event.getMessage(), this.pus));
+        if(this.pus.getCommandManager().getExecutor(event.getMessage().split(" ")[0]) != null) {
+            this.pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), null, event.getMessage(), this.pus));
+        }
     }
 
     @Handler

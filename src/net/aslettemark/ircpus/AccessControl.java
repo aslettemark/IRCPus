@@ -43,7 +43,7 @@ public class AccessControl {
     /**
      * Determines if an account has admin access
      * @param account The account to test
-     * @return Wether the account has admin access to the "pusekatt"
+     * @return Whether the account has admin access to the "pusekatt"
      */
     public boolean isAdmin(String account) {
         return this.admins.contains(account);
@@ -52,18 +52,25 @@ public class AccessControl {
     /**
      * Determines if a User has admin access
      * @param user The User to test
-     * @return Wether the User has admin access to the "pusekatt"
+     * @return Whether the User has admin access to the "pusekatt"
      */
     public boolean isAdmin(User user) {
+        if (user == null) {
+            return false;
+        }
+
         return this.isAdmin(user.getAccount().get());
     }
 
     /**
      * Determines if a Channel has admin access
      * @param channel The Channel to test
-     * @return Wether the channel is marked as an admin channel
+     * @return Whether the channel is marked as an admin channel
      */
     public boolean isAdmin(Channel channel) {
+        if (channel == null) {
+            return false;
+        }
         return this.isAdmin(channel.getName());
     }
 

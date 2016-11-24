@@ -54,7 +54,13 @@ public class IRCPus {
         String server = this.connectionConfig.fetchString(Strings.CONFIG_KEY_SERVER);
         Sanity.nullCheck(nick, Strings.ERROR_BAD_CONNECTION_CONFIG);
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
-        this.client = Client.builder().nick(nick).serverHost(server).secureTrustManagerFactory(new AcceptingTrustManagerFactory()).build();
+
+        Client.Builder builder = Client.builder();
+        builder.nick(nick);
+        builder.serverHost(server);
+        builder.secureTrustManagerFactory(new AcceptingTrustManagerFactory());
+
+        this.client = builder.build();
 
         for(String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
             this.client.addChannel(s.replace("\\", ""));
