@@ -31,7 +31,7 @@ import net.aslettemark.ircpus.config.ConnectionConfig;
 import net.aslettemark.ircpus.listener.CommandListener;
 import net.aslettemark.ircpus.listener.MessageListener;
 import org.kitteh.irc.client.library.Client;
-import org.kitteh.irc.client.library.ClientBuilder;
+import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
 import org.kitteh.irc.client.library.util.Sanity;
 
 import java.io.File;
@@ -54,7 +54,7 @@ public class IRCPus {
         String server = this.connectionConfig.fetchString(Strings.CONFIG_KEY_SERVER);
         Sanity.nullCheck(nick, Strings.ERROR_BAD_CONNECTION_CONFIG);
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
-        this.client = Client.builder().nick(nick).server(server).build();
+        this.client = Client.builder().nick(nick).serverHost(server).secureTrustManagerFactory(new AcceptingTrustManagerFactory()).build();
 
         for(String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
             this.client.addChannel(s.replace("\\", ""));
