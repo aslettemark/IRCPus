@@ -62,6 +62,8 @@ public class MessageListener {
 
     @Handler
     public void onPrivateMessage(PrivateMessageEvent event) {
+        System.out.println("MSG: <" + event.getActor().getNick() + "> " + event.getMessage());
+
         if (this.pus.getNoteHandler().hasNotes(event.getActor().getNick())) {
             this.sendNotes(event.getActor(), event.getActor());
         }
