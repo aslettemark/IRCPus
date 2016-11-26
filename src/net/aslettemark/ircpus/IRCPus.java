@@ -37,6 +37,7 @@ import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
 import org.kitteh.irc.client.library.util.Sanity;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,6 +45,7 @@ public class IRCPus {
 
     public Client client;
     public ArrayList<Note> notes;
+
     private HashMap<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
     private CommandManager commandManager;
@@ -70,7 +72,7 @@ public class IRCPus {
 
         for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
             this.client.addChannel(s.replace("\\", ""));
-            System.out.println("Added " + s.replace("\\", ""));
+            log("Added " + s.replace("\\", ""));
         }
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
@@ -106,4 +108,14 @@ public class IRCPus {
     public NoteHandler getNoteHandler() {
         return noteHandler;
     }
+
+    /**
+     *
+     * @param msg The message to log
+     */
+    public static void log(String msg) {
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        System.out.println("[" + ts.toString().split(" ")[1].substring(0, 8) + "] " + msg); //Haha I know how terrible this is
+    }
+
 }

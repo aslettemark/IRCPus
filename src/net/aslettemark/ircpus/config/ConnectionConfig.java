@@ -24,6 +24,7 @@
 
 package net.aslettemark.ircpus.config;
 
+import net.aslettemark.ircpus.IRCPus;
 import net.aslettemark.ircpus.Strings;
 import org.yaml.snakeyaml.Yaml;
 
@@ -72,15 +73,15 @@ public class ConnectionConfig extends HashMap implements Config {
             values = (HashMap<String, String>) yaml.load(new FileInputStream(this.file));
 
             for (String key : values.keySet()) {
-                System.out.println(key + ": " + values.get(key));
+                IRCPus.log(key + ": " + values.get(key));
                 this.put(key, values.get(key));
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Creating connection config file. Edit before restarting bot.");
+            IRCPus.log("Creating connection config file. Edit before restarting bot.");
             try {
                 Files.copy(ConnectionConfig.class.getResourceAsStream("/" + Strings.CONFIG_CONNECTION), this.file.toPath());
             } catch (IOException e1) {
-                System.out.println("Failed to write file: " + Strings.CONFIG_CONNECTION);
+                IRCPus.log("Failed to write file: " + Strings.CONFIG_CONNECTION);
                 System.exit(1);
             }
             System.exit(0);

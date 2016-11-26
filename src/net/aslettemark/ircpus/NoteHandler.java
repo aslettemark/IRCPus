@@ -60,9 +60,9 @@ public class NoteHandler {
             }
             buffer.close();
             fileWriter.close();
-            System.out.println("Saved notes.");
+            IRCPus.log("Saved notes.");
         } catch (final IOException e) {
-            System.out.println("Error saving notes.");
+            IRCPus.log("Error saving notes.");
         }
     }
 
@@ -93,9 +93,9 @@ public class NoteHandler {
             buffer.close();
             reader.close();
         } catch (final FileNotFoundException ex) {
-            System.out.println("Not able to find file " + fileName);
+            IRCPus.log("Not able to find file " + fileName);
         } catch (final IOException e) {
-            System.out.println("Encountered an error reading file " + fileName);
+            IRCPus.log("Encountered an error reading file " + fileName);
         }
         return notes;
     }
@@ -128,9 +128,9 @@ public class NoteHandler {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                System.out.println("Created file: " + fileName);
+                IRCPus.log("Created file: " + fileName);
             } catch (IOException e) {
-                System.out.println("Error creating file: " + fileName);
+                IRCPus.log("Error creating file: " + fileName);
             }
         }
     }
