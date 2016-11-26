@@ -31,6 +31,7 @@ import net.aslettemark.ircpus.config.Config;
 import net.aslettemark.ircpus.config.ConnectionConfig;
 import net.aslettemark.ircpus.element.Note;
 import net.aslettemark.ircpus.listener.CommandListener;
+import net.aslettemark.ircpus.listener.ConnectionListener;
 import net.aslettemark.ircpus.listener.MessageListener;
 import org.kitteh.irc.client.library.Client;
 import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
@@ -77,6 +78,7 @@ public class IRCPus {
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
         this.client.getEventManager().registerEventListener(new CommandListener(this));
+        this.client.getEventManager().registerEventListener(new ConnectionListener(this));
 
         this.commandManager = new CommandManager(this);
         this.getCommandManager().registerCommand("ping", new PingCommand());
@@ -85,6 +87,14 @@ public class IRCPus {
         this.accessControl = new AccessControl(this);
 
         this.notes = this.getNoteHandler().loadNotes();
+    }
+
+    /**
+     * @param msg The message to log
+     */
+    public static void log(String msg) {
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        System.out.println("[" + ts.toString().split(" ")[1].substring(0, 8) + "] " + msg); //Haha I know how terrible this is
     }
 
     /**
@@ -109,13 +119,8 @@ public class IRCPus {
         return noteHandler;
     }
 
-    /**
-     *
-     * @param msg The message to log
-     */
-    public static void log(String msg) {
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
-        System.out.println("[" + ts.toString().split(" ")[1].substring(0, 8) + "] " + msg); //Haha I know how terrible this is
+    private void nickServAuth(String username, String password) {
+        //TODO
     }
 
 }

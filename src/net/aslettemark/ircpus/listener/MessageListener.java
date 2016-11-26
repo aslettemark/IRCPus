@@ -32,6 +32,7 @@ import org.kitteh.irc.client.library.element.User;
 import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
 import org.kitteh.irc.client.library.event.helper.MessageEvent;
 import org.kitteh.irc.client.library.event.user.PrivateMessageEvent;
+import org.kitteh.irc.client.library.event.user.PrivateNoticeEvent;
 import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
 
 import java.util.ArrayList;
@@ -76,6 +77,11 @@ public class MessageListener {
     @Handler
     public void onMessage(MessageEvent event) {
 
+    }
+
+    @Handler
+    public void onNotice(PrivateNoticeEvent event) {
+        IRCPus.log("NOTICE <" + event.getActor().getNick() + "> " + event.getMessage());
     }
 
     /**
