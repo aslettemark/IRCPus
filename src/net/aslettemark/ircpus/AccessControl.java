@@ -57,11 +57,8 @@ public class AccessControl {
      * @return Whether the User has admin access to the "pusekatt"
      */
     public boolean isAdmin(User user) {
-        if (user == null) {
-            return false;
-        }
+        return user != null && user.getAccount().get() != null && this.isAdmin(user.getAccount().get());
 
-        return this.isAdmin(user.getAccount().get());
     }
 
     /**
@@ -71,10 +68,7 @@ public class AccessControl {
      * @return Whether the channel is marked as an admin channel
      */
     public boolean isAdmin(Channel channel) {
-        if (channel == null) {
-            return false;
-        }
-        return this.isAdmin(channel.getName());
+        return channel != null && this.isAdmin(channel.getName());
     }
 
     /**
