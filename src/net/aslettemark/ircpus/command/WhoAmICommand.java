@@ -51,5 +51,6 @@ public class WhoAmICommand implements CommandExecutor {
         user.sendMessage("Nickname: " + nick);
         user.sendMessage("User: " + userString);
         user.sendMessage("Account: " + acc);
+        user.sendMessage("Administrator: " + (event.getPus().getAccessControl().isAdmin(acc) ? "Yes" : "No"));
     }
 }

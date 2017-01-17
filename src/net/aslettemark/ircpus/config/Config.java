@@ -61,7 +61,7 @@ public interface Config {
     /**
      * Get the values used in the config for saving
      *
-     * @return a hashmap containing all the necessary keys and values
+     * @return a HashMap containing all the necessary keys and values
      */
     HashMap<String, Object> getSaveValues();
 
@@ -73,7 +73,7 @@ public interface Config {
     /**
      * Saves the config file
      *
-     * @return Wether the write was successful
+     * @return Whether the write was successful
      */
     boolean save();
 

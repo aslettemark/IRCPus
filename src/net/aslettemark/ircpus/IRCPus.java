@@ -72,9 +72,16 @@ public class IRCPus {
 
         this.client = builder.build();
 
-        for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).split(", ")) {
+        for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).replaceAll(" ", "").split(",")) {
             this.client.addChannel(s.replace("\\", ""));
             log("Added " + s.replace("\\", ""));
+        }
+
+        this.accessControl = new AccessControl(this);
+        for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_ADMINS)).replaceAll(" ", "").split(",")) {
+            this.accessControl.addAdmin(s);
+            String fb = "Added " + s + " as an admin " + (s.startsWith("#") ? "(Channel)" : "(User)");
+            log(fb);
         }
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
@@ -85,8 +92,6 @@ public class IRCPus {
         this.getCommandManager().registerCommand("ping", new PingCommand());
         this.getCommandManager().registerCommand("note", new NoteCommand());
         this.getCommandManager().registerCommand("whoami", new WhoAmICommand());
-
-        this.accessControl = new AccessControl(this);
 
         this.notes = this.getNoteHandler().loadNotes();
     }

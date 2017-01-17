@@ -3,3 +3,4 @@ server: irc.esper.net
 channels: \#aksels, \#fjortisfylla
 nickserv-username: DONOTAUTH
 nickserv-password: DONOTAUTH
+admins: maroni, aksels
