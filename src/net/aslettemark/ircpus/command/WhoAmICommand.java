@@ -25,6 +25,7 @@
 package net.aslettemark.ircpus.command;
 
 import net.aslettemark.ircpus.event.CommandEvent;
+import org.kitteh.irc.client.library.element.Channel;
 import org.kitteh.irc.client.library.element.MessageReceiver;
 import org.kitteh.irc.client.library.element.User;
 
@@ -44,8 +45,11 @@ public class WhoAmICommand implements CommandExecutor {
         }
 
         MessageReceiver mr = event.getFeedbackReceiver();
-        mr.sendMessage("Nickname: " + nick);
-        mr.sendMessage("User: " + userString);
-        mr.sendMessage("Account: " + acc);
+        if (mr instanceof Channel) {
+            mr.sendMessage(nick + ": Sending in private message.");
+        }
+        user.sendMessage("Nickname: " + nick);
+        user.sendMessage("User: " + userString);
+        user.sendMessage("Account: " + acc);
     }
 }
