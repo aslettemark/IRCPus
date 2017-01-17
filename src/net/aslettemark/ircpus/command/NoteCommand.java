@@ -48,7 +48,7 @@ public class NoteCommand implements CommandExecutor {
             }
         }
 
-        //Check for illegal characters
+        //Check for illegal strings
         final String[] disallowed = {"\n", "\r"};
         for (final String rule : disallowed) {
             if (event.getCommand().contains(rule)) {
