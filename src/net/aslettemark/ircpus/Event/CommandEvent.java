@@ -87,4 +87,9 @@ public class CommandEvent {
     public boolean isPrivileged() {
         return privileged;
     }
+
+    @Override
+    public String toString() {
+        return user.getNick() + " in " + channel.getName() + ": " + command;
+    }
 }
