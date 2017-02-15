@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2016 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2017 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -55,7 +55,6 @@ public class PartCommand implements CommandExecutor {
             event.getPus().getConnectionConfig().set(Strings.CONFIG_KEY_CHANNELS, save);
             event.getPus().getConnectionConfig().save();
         }
-
     }
 
 }
