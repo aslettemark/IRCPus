@@ -24,10 +24,7 @@
 
 package net.aslettemark.ircpus;
 
-import net.aslettemark.ircpus.command.CommandManager;
-import net.aslettemark.ircpus.command.NoteCommand;
-import net.aslettemark.ircpus.command.PingCommand;
-import net.aslettemark.ircpus.command.WhoAmICommand;
+import net.aslettemark.ircpus.command.*;
 import net.aslettemark.ircpus.config.Config;
 import net.aslettemark.ircpus.config.ConnectionConfig;
 import net.aslettemark.ircpus.element.Note;
@@ -92,6 +89,8 @@ public class IRCPus {
         this.getCommandManager().registerCommand("ping", new PingCommand());
         this.getCommandManager().registerCommand("note", new NoteCommand());
         this.getCommandManager().registerCommand("whoami", new WhoAmICommand());
+        this.getCommandManager().registerCommand("join", new JoinCommand());
+        this.getCommandManager().registerCommand("part", new PartCommand());
 
         this.notes = this.getNoteHandler().loadNotes();
     }
@@ -126,8 +125,12 @@ public class IRCPus {
         return noteHandler;
     }
 
-    private void nickServAuth(String username, String password) {
-        //TODO
+    public ConnectionConfig getConnectionConfig() {
+        return this.connectionConfig;
+    }
+
+    public void nickServAuth(String username, String password) {
+        this.client.sendMessage("nickserv", "identify " + username + " " + password);
     }
 
 }

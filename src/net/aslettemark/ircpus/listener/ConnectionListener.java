@@ -49,6 +49,6 @@ public class ConnectionListener {
             return;
         }
         IRCPus.log("Attempting NickServ authentication");
-        this.pus.client.sendMessage("nickserv", "identify " + nick + " " + pass);
+        this.pus.nickServAuth(nick, pass);
     }
 }
