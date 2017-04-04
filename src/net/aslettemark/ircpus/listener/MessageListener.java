@@ -56,7 +56,7 @@ public class MessageListener {
         if (message.startsWith(".") && message.length() > 1) {
             String command = message.replaceFirst(".", "");
             if (this.pus.getCommandManager().getExecutor(command.split(" ")[0].toLowerCase()) != null) {
-                pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), event.getChannel(), command, this.pus));
+                pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), event.getChannel(), command, this.pus));
             }
         }
     }
@@ -70,7 +70,7 @@ public class MessageListener {
         }
 
         if (this.pus.getCommandManager().getExecutor(event.getMessage().split(" ")[0].toLowerCase()) != null) {
-            this.pus.client.getEventManager().callEvent(new CommandEvent(this.pus.client, event.getActor(), null, event.getMessage(), this.pus));
+            this.pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), null, event.getMessage(), this.pus));
         }
     }
 

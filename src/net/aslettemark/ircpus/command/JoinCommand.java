@@ -46,7 +46,7 @@ public class JoinCommand implements CommandExecutor {
             mr.sendMessage(event.getActor().getNick() + ": Syntax: join <channel> [-add]");
             return;
         }
-        event.getPus().client.addChannel(split[1]);
+        event.getPus().getClient().addChannel(split[1]);
         if (split.length > 2 && split[2].equalsIgnoreCase("-add")) {
             List<String> channels = Arrays.asList(((String) event.getPus().getConnectionConfig().get(Strings.CONFIG_KEY_CHANNELS)).replaceAll("\\\\", "").split(", "));
             channels = new ArrayList<>(channels);

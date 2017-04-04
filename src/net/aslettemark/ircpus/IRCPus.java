@@ -42,7 +42,7 @@ import java.util.HashMap;
 
 public class IRCPus {
 
-    public Client client;
+    private Client client;
     public ArrayList<Note> notes;
 
     private HashMap<String, Config> configs = new HashMap<>();
@@ -132,6 +132,10 @@ public class IRCPus {
 
     public void nickServAuth(String username, String password) {
         this.client.sendMessage("nickserv", "identify " + username + " " + password);
+    }
+
+    public Client getClient() {
+        return this.client;
     }
 
 }

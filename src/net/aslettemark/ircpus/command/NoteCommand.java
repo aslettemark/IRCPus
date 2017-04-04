@@ -40,7 +40,7 @@ public class NoteCommand implements CommandExecutor {
         final String content = event.getCommand().replaceFirst("note " + event.getCommand().split(" ")[1] + " ", "");
 
         //Check for max nick length
-        int maxNickLength = event.getPus().client.getServerInfo().getNickLengthLimit();
+        int maxNickLength = event.getPus().getClient().getServerInfo().getNickLengthLimit();
         for (String t : targets) {
             if (t.length() > maxNickLength) {
                 event.getUser().sendMessage("The maximum nick length limit on this server is " + maxNickLength);

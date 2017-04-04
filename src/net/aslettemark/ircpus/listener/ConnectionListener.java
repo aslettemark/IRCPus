@@ -40,7 +40,7 @@ public class ConnectionListener {
 
     @Handler
     public void onConnected(ClientConnectedEvent event) {
-        IRCPus.log("Connected to " + this.pus.client.getServerInfo().getAddress().get());
+        IRCPus.log("Connected to " + this.pus.getClient().getServerInfo().getAddress().get());
         ConnectionConfig cc = (ConnectionConfig) this.pus.getConfig(Strings.CONFIG_CONNECTION);
         String nick = (String) cc.fetch(Strings.CONFIG_KEY_NICKSERV_USERNAME);
         String pass = (String) cc.fetch(Strings.CONFIG_KEY_NICKSERV_PASSWORD);

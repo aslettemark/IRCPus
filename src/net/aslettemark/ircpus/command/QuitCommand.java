@@ -35,6 +35,6 @@ public class QuitCommand implements CommandExecutor {
             return;
         }
         IRCPus.log("Shutting down (" + event.toString() + ")");
-        event.getPus().client.shutdown("Goodbye.");
+        event.getPus().getClient().shutdown("Goodbye.");
     }
 }

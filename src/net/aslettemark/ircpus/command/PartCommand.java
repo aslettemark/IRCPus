@@ -46,7 +46,7 @@ public class PartCommand implements CommandExecutor {
             mr.sendMessage(event.getActor().getNick() + ": Syntax: part <channel> [-remove]");
             return;
         }
-        event.getPus().client.removeChannel(split[1]);
+        event.getPus().getClient().removeChannel(split[1]);
         if (split.length > 2 && split[2].equalsIgnoreCase("-remove")) {
             List<String> channels = Arrays.asList(((String) event.getPus().getConnectionConfig().get(Strings.CONFIG_KEY_CHANNELS)).replaceAll("\\\\", "").split(", "));
             channels = new ArrayList<>(channels);
