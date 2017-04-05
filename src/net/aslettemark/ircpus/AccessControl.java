@@ -57,7 +57,7 @@ public class AccessControl {
      * @return Whether the User has admin access to the "pusekatt"
      */
     public boolean isAdmin(User user) {
-        return user != null && user.getAccount().get() != null && this.isAdmin(user.getAccount().get());
+        return user != null && user.getAccount().isPresent() && this.isAdmin(user.getAccount().get());
 
     }
 
