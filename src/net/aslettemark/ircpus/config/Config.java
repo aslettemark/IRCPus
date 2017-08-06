@@ -26,6 +26,7 @@ package net.aslettemark.ircpus.config;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public interface Config {
 
@@ -61,9 +62,9 @@ public interface Config {
     /**
      * Get the values used in the config for saving
      *
-     * @return a HashMap containing all the necessary keys and values
+     * @return a Map containing all the necessary keys and values
      */
-    HashMap<String, Object> getSaveValues();
+    Map<String, Object> getSaveValues();
 
     /**
      * Loads config from file. Should be called in constructor.

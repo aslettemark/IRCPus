@@ -26,6 +26,7 @@ package net.aslettemark.ircpus.command;
 
 import net.aslettemark.ircpus.event.CommandEvent;
 
+@FunctionalInterface
 public interface CommandExecutor {
 
     /**

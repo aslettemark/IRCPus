@@ -27,12 +27,13 @@ package net.aslettemark.ircpus.command;
 import net.aslettemark.ircpus.IRCPus;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class CommandManager {
 
     private IRCPus pus;
-    private HashMap<String, CommandExecutor> executors;
+    private Map<String, CommandExecutor> executors;
 
     public CommandManager(IRCPus pus) {
         this.pus = pus;

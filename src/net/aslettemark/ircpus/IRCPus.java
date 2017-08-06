@@ -39,13 +39,14 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class IRCPus {
 
     private Client client;
     public ArrayList<Note> notes;
 
-    private HashMap<String, Config> configs = new HashMap<>();
+    private Map<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
     private CommandManager commandManager;
     private AccessControl accessControl;
@@ -93,6 +94,7 @@ public class IRCPus {
         this.getCommandManager().registerCommand("part", new PartCommand());
         this.getCommandManager().registerCommand("quit", new QuitCommand());
         this.getCommandManager().registerCommand("help", new HelpCommand());
+        //this.getCommandManager().registerCommand("lol", e -> e.getFeedbackReceiver().sendMessage("lol"));
 
         this.notes = this.getNoteHandler().loadNotes();
     }
