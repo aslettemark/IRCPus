@@ -53,10 +53,14 @@ public class MessageListener {
             this.sendNotes(event.getActor(), event.getChannel());
         }
 
-        if (message.startsWith(".") && message.length() > 1) {
-            String command = message.replaceFirst(".", "");
-            if (this.pus.getCommandManager().getExecutor(command.split(" ")[0].toLowerCase()) != null) {
-                pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), event.getChannel(), command, this.pus));
+        String[] triggers = {".", this.pus.getClient().getNick() + ": "};
+        for (String trigger : triggers) {
+            if (message.startsWith(trigger) && message.length() > trigger.length()) {
+                String command = message.replaceFirst(trigger, "");
+                if (this.pus.getCommandManager().getExecutor(command.split(" ")[0].toLowerCase()) != null) {
+                    pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), event.getChannel(), command, this.pus));
+                    break;
+                }
             }
         }
     }
