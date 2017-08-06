@@ -27,6 +27,7 @@ package net.aslettemark.ircpus.command;
 import net.aslettemark.ircpus.IRCPus;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class CommandManager {
 
@@ -50,6 +51,10 @@ public class CommandManager {
 
     public CommandExecutor getExecutor(String command) {
         return this.executors.get(command);
+    }
+
+    public Set<String> getCommands() {
+        return this.executors.keySet();
     }
 
 }

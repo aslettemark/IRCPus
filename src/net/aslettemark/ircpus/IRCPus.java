@@ -92,6 +92,7 @@ public class IRCPus {
         this.getCommandManager().registerCommand("join", new JoinCommand());
         this.getCommandManager().registerCommand("part", new PartCommand());
         this.getCommandManager().registerCommand("quit", new QuitCommand());
+        this.getCommandManager().registerCommand("help", new HelpCommand());
 
         this.notes = this.getNoteHandler().loadNotes();
     }
