@@ -38,11 +38,7 @@ public class WhoAmICommand implements CommandExecutor {
         User user = event.getActor();
         String nick = user.getNick();
         String userString = user.getUserString();
-        Optional<String> account = user.getAccount();
-        String acc = "Not logged in.";
-        if (account.get() != null) {
-            acc = account.get();
-        }
+        String acc = user.getAccount().orElse("Not logged in.");
 
         MessageReceiver mr = event.getFeedbackReceiver();
         if (mr instanceof Channel) {
