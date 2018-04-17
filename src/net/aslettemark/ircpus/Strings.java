@@ -34,6 +34,5 @@ public class Strings {
     public static final String CONFIG_KEY_NICKSERV_PASSWORD = "nickserv-password";
     public static final String CONFIG_KEY_ADMINS = "admins";
     public static final String ERROR_BAD_CONNECTION_CONFIG = "There is something wrong with your connection.yaml";
-    public static String NOTES_FILE = "";
 
 }

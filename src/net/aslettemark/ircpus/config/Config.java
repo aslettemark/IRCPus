@@ -25,7 +25,6 @@
 package net.aslettemark.ircpus.config;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 public interface Config {

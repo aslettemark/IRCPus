@@ -27,7 +27,6 @@ package net.aslettemark.ircpus;
 import net.aslettemark.ircpus.command.*;
 import net.aslettemark.ircpus.config.Config;
 import net.aslettemark.ircpus.config.ConnectionConfig;
-import net.aslettemark.ircpus.element.Note;
 import net.aslettemark.ircpus.listener.CommandListener;
 import net.aslettemark.ircpus.listener.ConnectionListener;
 import net.aslettemark.ircpus.listener.MessageListener;
@@ -37,20 +36,18 @@ import org.kitteh.irc.client.library.util.Sanity;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class IRCPus {
 
     private Client client;
-    public ArrayList<Note> notes;
 
     private Map<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
     private CommandManager commandManager;
     private AccessControl accessControl;
-    private NoteHandler noteHandler = new NoteHandler(this);
+    private NoteHandler noteHandler;
 
     public IRCPus() {
         File connection = new File(Strings.CONFIG_CONNECTION);
@@ -59,7 +56,6 @@ public class IRCPus {
 
         String nick = this.connectionConfig.fetchString(Strings.CONFIG_KEY_NICKNAME);
         String server = this.connectionConfig.fetchString(Strings.CONFIG_KEY_SERVER);
-        Strings.NOTES_FILE = server + ".notes";
         Sanity.nullCheck(nick, Strings.ERROR_BAD_CONNECTION_CONFIG);
         Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
 
@@ -96,7 +92,7 @@ public class IRCPus {
         this.getCommandManager().registerCommand("help", new HelpCommand());
         //this.getCommandManager().registerCommand("lol", e -> e.getFeedbackReceiver().sendMessage("lol"));
 
-        this.notes = this.getNoteHandler().loadNotes();
+        this.noteHandler = new NoteHandler(this, server + ".notes");
     }
 
     /**

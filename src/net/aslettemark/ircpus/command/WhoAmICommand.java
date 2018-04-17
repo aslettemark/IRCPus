@@ -29,8 +29,6 @@ import org.kitteh.irc.client.library.element.Channel;
 import org.kitteh.irc.client.library.element.MessageReceiver;
 import org.kitteh.irc.client.library.element.User;
 
-import java.util.Optional;
-
 public class WhoAmICommand implements CommandExecutor {
 
     @Override

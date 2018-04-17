@@ -29,11 +29,12 @@ import org.kitteh.irc.client.library.element.User;
 import org.kitteh.irc.client.library.util.Sanity;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class AccessControl {
 
     private IRCPus pus;
-    private HashSet<String> admins;
+    private Set<String> admins;
 
     public AccessControl(IRCPus pus) {
         this.pus = pus;
@@ -43,11 +44,11 @@ public class AccessControl {
     /**
      * Determines if an account has admin access
      *
-     * @param account The account to test
-     * @return Whether the account has admin access to the "pusekatt"
+     * @param candidate The account/channel to test
+     * @return Whether the candidate has admin access to the "pusekatt"
      */
-    public boolean isAdmin(String account) {
-        return this.admins.contains(account);
+    public boolean isAdmin(String candidate) {
+        return this.admins.contains(candidate);
     }
 
     /**
@@ -80,25 +81,9 @@ public class AccessControl {
     }
 
     /**
-     * @param channel The channel to mark as an admin channel
+     * @return A Set of all admins: accounts and channels
      */
-    public void addAdmin(Channel channel) {
-        Sanity.nullCheck(channel, "Cannot give admin rights to null");
-        this.admins.add(channel.getName());
-    }
-
-    /**
-     * @param user The user to give admin rights
-     */
-    public void addAdmin(User user) {
-        Sanity.nullCheck(user.getAccount(), "Cannot give admin rights to users without accounts");
-        this.admins.add(user.getAccount().get());
-    }
-
-    /**
-     * @return A HashSet of all admins, accounts and channels
-     */
-    public HashSet<String> getAdmins() {
+    public Set<String> getAdmins() {
         return this.admins;
     }
 

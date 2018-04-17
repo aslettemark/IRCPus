@@ -36,7 +36,8 @@ public class Note {
         this.content = content;
     }
 
-    public String getPrintOut() {
+    @Override
+    public String toString() {
         return "<" + this.getSender() + "> " + this.getContent();
     }
 

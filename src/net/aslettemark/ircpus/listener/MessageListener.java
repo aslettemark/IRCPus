@@ -100,7 +100,7 @@ public class MessageListener {
             receiver = user;
         }
         for (Note n : notes) {
-            receiver.sendMessage(user.getNick() + ": " + n.getPrintOut());
+            receiver.sendMessage(user.getNick() + ": " + n);
             this.pus.getNoteHandler().removeNote(n);
         }
     }
