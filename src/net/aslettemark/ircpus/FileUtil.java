@@ -22,14 +22,44 @@
  * SOFTWARE.
  */
 
-package net.aslettemark.ircpus.command;
+package net.aslettemark.ircpus;
 
-import net.aslettemark.ircpus.event.CommandEvent;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PingCommand implements CommandExecutor {
+public class FileUtil {
 
-    @Override
-    public void execute(CommandEvent event) {
-        event.getFeedbackReceiver().sendMessage(event.getActor().getNick() + ": Pong!");
+    public static ArrayList<String> readFile(String file) throws IOException {
+        return readFile(new File(file));
+    }
+
+    public static ArrayList<String> readFile(File file) throws IOException {
+        final ArrayList<String> lines = new ArrayList<>();
+        String line = "";
+        try (
+                final FileReader reader = new FileReader(file);
+                final BufferedReader buffer = new BufferedReader(reader);
+        ) {
+            while ((line = buffer.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+        return lines;
+    }
+
+    public static String toSingleLine(List<String> lines) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : lines) {
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+    public static void append(String text, File file) throws IOException {
+        FileWriter writer = new FileWriter(file, true);
+        writer.write(text);
+        writer.flush();
+        writer.close();
     }
 }

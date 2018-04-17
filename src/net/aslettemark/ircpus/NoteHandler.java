@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2017 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -30,31 +30,36 @@ import org.kitteh.irc.client.library.util.StringUtil;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteHandler {
 
     private IRCPus pus;
+    private String fileName;
+    private List<Note> notes;
 
-    public NoteHandler(IRCPus pus) {
+    public NoteHandler(IRCPus pus, String file) {
         this.pus = pus;
+        this.fileName = file;
+        this.notes = this.loadNotes();
     }
 
     public void addNote(String sender, String target, String content) {
-        this.pus.notes.add(new Note(sender, target, content));
+        this.notes.add(new Note(sender, target, content));
         this.saveNotes();
     }
 
     public void removeNote(Note note) {
-        this.pus.notes.remove(note);
+        this.notes.remove(note);
         this.saveNotes();
     }
 
     public void saveNotes() {
         this.wipeFile();
         try {
-            final FileWriter fileWriter = new FileWriter(Strings.NOTES_FILE);
+            final FileWriter fileWriter = new FileWriter(this.fileName);
             final BufferedWriter buffer = new BufferedWriter(fileWriter);
-            for (final Note note : this.pus.notes) {
+            for (final Note note : this.notes) {
                 buffer.write(note.getSender() + " " + note.getTarget() + " " + note.getContent());
                 buffer.newLine();
             }
@@ -70,7 +75,7 @@ public class NoteHandler {
         this.validateFile(); //Ironic - validating that it exists before removing its content - it makes my life easier :-)
         FileOutputStream writer;
         try {
-            writer = new FileOutputStream(Strings.NOTES_FILE);
+            writer = new FileOutputStream(this.fileName);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace(); //Can't really imagine this happening after validation - w/e
@@ -80,7 +85,7 @@ public class NoteHandler {
     public ArrayList<Note> loadNotes() {
         this.validateFile();
         ArrayList<Note> notes = new ArrayList<>();
-        final String fileName = Strings.NOTES_FILE;
+        final String fileName = this.fileName;
         String line;
         try {
             final FileReader reader = new FileReader(fileName);
@@ -110,7 +115,7 @@ public class NoteHandler {
 
     public ArrayList<Note> getNotes(String nick) {
         ArrayList<Note> notes = new ArrayList<>();
-        for (Note n : this.pus.notes) {
+        for (Note n : this.notes) {
             if (n.getTarget().equalsIgnoreCase(nick)) {
                 notes.add(n);
             }
@@ -123,7 +128,7 @@ public class NoteHandler {
     }
 
     private void validateFile() {
-        final String fileName = Strings.NOTES_FILE;
+        final String fileName = this.fileName;
         File file = new File(fileName);
         if (!file.exists()) {
             try {

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2017 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,8 +28,6 @@ import net.aslettemark.ircpus.event.CommandEvent;
 import org.kitteh.irc.client.library.element.Channel;
 import org.kitteh.irc.client.library.element.MessageReceiver;
 import org.kitteh.irc.client.library.element.User;
-
-import java.util.Optional;
 
 public class WhoAmICommand implements CommandExecutor {
 

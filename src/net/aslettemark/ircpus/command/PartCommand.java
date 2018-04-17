@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2017 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -24,7 +24,6 @@
 
 package net.aslettemark.ircpus.command;
 
-import net.aslettemark.ircpus.Strings;
 import net.aslettemark.ircpus.event.CommandEvent;
 import org.kitteh.irc.client.library.element.MessageReceiver;
 
@@ -43,18 +42,18 @@ public class PartCommand implements CommandExecutor {
             return;
         }
         if (!(split.length > 1) || !split[1].startsWith("#")) {
-            mr.sendMessage(event.getActor().getNick() + ": Syntax: part <channel> [-remove]");
+            mr.sendMessage(event.getActor().getNick() + ": Syntax: part <channel>");// [-remove]");
             return;
         }
         event.getPus().getClient().removeChannel(split[1]);
-        if (split.length > 2 && split[2].equalsIgnoreCase("-remove")) {
+        /*if (split.length > 2 && split[2].equalsIgnoreCase("-remove")) {
             List<String> channels = Arrays.asList(((String) event.getPus().getConnectionConfig().get(Strings.CONFIG_KEY_CHANNELS)).replaceAll("\\\\", "").split(", "));
             channels = new ArrayList<>(channels);
             channels.remove(split[1]);
             String save = String.join(", ", channels);
             event.getPus().getConnectionConfig().set(Strings.CONFIG_KEY_CHANNELS, save);
             event.getPus().getConnectionConfig().save();
-        }
+        }*/
     }
 
 }

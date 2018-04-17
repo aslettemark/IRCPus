@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2017 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -24,12 +24,28 @@
 
 package net.aslettemark.ircpus;
 
+import net.aslettemark.ircpus.config.ConnectionConfig;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 public class Main {
 
     public static IRCPus bot;
 
     public static void main(String[] args) {
-        Main.bot = new IRCPus();
+        if (!(args.length > 0)) {
+            System.out.println("Usage: java -jar IRCPus.jar <connection config file>");
+            try {
+                Files.copy(ConnectionConfig.class.getResourceAsStream("/connection.json"), new File("exampleconfig.json").toPath());
+            } catch (IOException e) {
+                System.exit(1);
+            }
+            System.out.println("Created example config file: exampleconfig.json");
+            System.exit(1);
+        }
+        bot = new IRCPus(args[0]);
     }
 
 }
