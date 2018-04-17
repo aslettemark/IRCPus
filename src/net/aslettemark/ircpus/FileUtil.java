@@ -22,62 +22,44 @@
  * SOFTWARE.
  */
 
-package net.aslettemark.ircpus.config;
+package net.aslettemark.ircpus;
 
-import java.io.File;
-import java.util.Map;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public interface Config {
+public class FileUtil {
 
-    /**
-     * Set a new value for a key
-     *
-     * @param key   key
-     * @param value new value
-     */
-    void set(String key, Object value);
+    public static ArrayList<String> readFile(String file) throws IOException {
+        return readFile(new File(file));
+    }
 
-    /**
-     * Get the value of a key
-     *
-     * @param key key
-     * @return Value matching key
-     */
-    Object fetch(String key);
+    public static ArrayList<String> readFile(File file) throws IOException {
+        final ArrayList<String> lines = new ArrayList<>();
+        String line = "";
+        try (
+                final FileReader reader = new FileReader(file);
+                final BufferedReader buffer = new BufferedReader(reader);
+        ) {
+            while ((line = buffer.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+        return lines;
+    }
 
-    /**
-     * Wipes all values in the config
-     */
-    void wipe();
+    public static String toSingleLine(List<String> lines) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : lines) {
+            sb.append(s);
+        }
+        return sb.toString();
+    }
 
-    /**
-     * Wipes the value of a key
-     *
-     * @param key   key
-     * @param value value to wipe
-     */
-    void wipe(String key, Object value);
-
-    /**
-     * Get the values used in the config for saving
-     *
-     * @return a Map containing all the necessary keys and values
-     */
-    Map<String, Object> getSaveValues();
-
-    /**
-     * Loads config from file. Should be called in constructor.
-     */
-    void load();
-
-    /**
-     * Saves the config file
-     *
-     * @return Whether the write was successful
-     */
-    boolean save();
-
-    File getSaveLocation();
-
-    void setSaveLocation(File file);
+    public static void append(String text, File file) throws IOException {
+        FileWriter writer = new FileWriter(file, true);
+        writer.write(text);
+        writer.flush();
+        writer.close();
+    }
 }

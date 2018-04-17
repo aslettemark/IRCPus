@@ -24,7 +24,6 @@
 
 package net.aslettemark.ircpus.command;
 
-import net.aslettemark.ircpus.Strings;
 import net.aslettemark.ircpus.event.CommandEvent;
 import org.kitteh.irc.client.library.element.MessageReceiver;
 
@@ -43,18 +42,18 @@ public class JoinCommand implements CommandExecutor {
             return;
         }
         if (!(split.length > 1) || !split[1].startsWith("#")) {
-            mr.sendMessage(event.getActor().getNick() + ": Syntax: join <channel> [-add]");
+            mr.sendMessage(event.getActor().getNick() + ": Syntax: join <channel>");// [-add]");
             return;
         }
         event.getPus().getClient().addChannel(split[1]);
-        if (split.length > 2 && split[2].equalsIgnoreCase("-add")) {
+        /*if (split.length > 2 && split[2].equalsIgnoreCase("-add")) {
             List<String> channels = Arrays.asList(((String) event.getPus().getConnectionConfig().get(Strings.CONFIG_KEY_CHANNELS)).replaceAll("\\\\", "").split(", "));
             channels = new ArrayList<>(channels);
             channels.add(split[1]);
             String save = String.join(", ", channels);
             event.getPus().getConnectionConfig().set(Strings.CONFIG_KEY_CHANNELS, save);
             event.getPus().getConnectionConfig().save();
-        }
+        }*/
     }
 
 }

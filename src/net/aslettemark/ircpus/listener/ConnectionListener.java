@@ -25,7 +25,6 @@
 package net.aslettemark.ircpus.listener;
 
 import net.aslettemark.ircpus.IRCPus;
-import net.aslettemark.ircpus.Strings;
 import net.aslettemark.ircpus.config.ConnectionConfig;
 import org.kitteh.irc.client.library.event.client.ClientConnectedEvent;
 import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
@@ -41,14 +40,14 @@ public class ConnectionListener {
     @Handler
     public void onConnected(ClientConnectedEvent event) {
         IRCPus.log("Connected to " + this.pus.getClient().getServerInfo().getAddress().get());
-        ConnectionConfig cc = (ConnectionConfig) this.pus.getConfig(Strings.CONFIG_CONNECTION);
-        String nick = (String) cc.fetch(Strings.CONFIG_KEY_NICKSERV_USERNAME);
-        String pass = (String) cc.fetch(Strings.CONFIG_KEY_NICKSERV_PASSWORD);
-        if (nick.equalsIgnoreCase("DONOTAUTH") || pass.equalsIgnoreCase("DONOTAUTH")) {
+        ConnectionConfig cc = this.pus.getConnectionConfig();
+        if (cc.getNickServPassword().isPresent() && cc.getNickServUserName().isPresent()) {
+            String nick = cc.getNickServUserName().get();
+            String pass = cc.getNickServPassword().get();
+            IRCPus.log("Attempting NickServ authentication");
+            this.pus.nickServAuth(nick, pass);
+        } else {
             IRCPus.log("Skipping NickServ authentication");
-            return;
         }
-        IRCPus.log("Attempting NickServ authentication");
-        this.pus.nickServAuth(nick, pass);
     }
 }

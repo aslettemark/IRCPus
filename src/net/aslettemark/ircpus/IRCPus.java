@@ -25,16 +25,18 @@
 package net.aslettemark.ircpus;
 
 import net.aslettemark.ircpus.command.*;
-import net.aslettemark.ircpus.config.Config;
 import net.aslettemark.ircpus.config.ConnectionConfig;
+import net.aslettemark.ircpus.config.JsonConnectionConfig;
 import net.aslettemark.ircpus.listener.CommandListener;
 import net.aslettemark.ircpus.listener.ConnectionListener;
 import net.aslettemark.ircpus.listener.MessageListener;
+import org.json.JSONException;
 import org.kitteh.irc.client.library.Client;
 import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
 import org.kitteh.irc.client.library.util.Sanity;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,21 +45,26 @@ public class IRCPus {
 
     private Client client;
 
-    private Map<String, Config> configs = new HashMap<>();
     private ConnectionConfig connectionConfig;
     private CommandManager commandManager;
     private AccessControl accessControl;
     private NoteHandler noteHandler;
 
-    public IRCPus() {
-        File connection = new File(Strings.CONFIG_CONNECTION);
-        this.configs.put(Strings.CONFIG_CONNECTION, new ConnectionConfig(connection));
-        this.connectionConfig = (ConnectionConfig) this.configs.get(Strings.CONFIG_CONNECTION);
+    public IRCPus(String connectionFile) {
+        try {
+            this.connectionConfig = new JsonConnectionConfig(connectionFile);
+        } catch(JSONException je) {
+            log("Malformed connection config file: " + connectionFile);
+            je.printStackTrace();
+            System.exit(1);
+        } catch (IOException e) {
+            log("Error reading connection config file: " + connectionFile);
+            e.printStackTrace();
+            System.exit(1);
+        }
 
-        String nick = this.connectionConfig.fetchString(Strings.CONFIG_KEY_NICKNAME);
-        String server = this.connectionConfig.fetchString(Strings.CONFIG_KEY_SERVER);
-        Sanity.nullCheck(nick, Strings.ERROR_BAD_CONNECTION_CONFIG);
-        Sanity.nullCheck(server, Strings.ERROR_BAD_CONNECTION_CONFIG);
+        String nick = this.connectionConfig.getIntendedNick();
+        String server = this.connectionConfig.getServerHostName();
 
         Client.Builder builder = Client.builder();
         builder.nick(nick);
@@ -66,13 +73,13 @@ public class IRCPus {
 
         this.client = builder.build();
 
-        for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_CHANNELS)).replaceAll(" ", "").split(",")) {
-            this.client.addChannel(s.replace("\\", ""));
-            log("Added " + s.replace("\\", ""));
+        for (String s : this.connectionConfig.getIntendedChannels()) {
+            this.client.addChannel(s);
+            log("Added " + s);
         }
 
         this.accessControl = new AccessControl(this);
-        for (String s : ((String) this.connectionConfig.get(Strings.CONFIG_KEY_ADMINS)).replaceAll(" ", "").split(",")) {
+        for (String s : this.connectionConfig.getAdmins()) {
             this.accessControl.addAdmin(s);
             String fb = "Added " + s + " as an admin " + (s.startsWith("#") ? "(Channel)" : "(User)");
             log(fb);
@@ -115,10 +122,6 @@ public class IRCPus {
      */
     public AccessControl getAccessControl() {
         return accessControl;
-    }
-
-    public Config getConfig(String file) {
-        return this.configs.get(file);
     }
 
     public NoteHandler getNoteHandler() {
