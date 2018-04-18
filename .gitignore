@@ -69,3 +69,4 @@ fabric.properties
 *.notes
 exampleconfig.json
 connection.json
+!resources/connection.json
