@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2019 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -33,9 +33,7 @@ import net.aslettemark.ircpus.listener.MessageListener;
 import org.json.JSONException;
 import org.kitteh.irc.client.library.Client;
 import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
-import org.kitteh.irc.client.library.util.Sanity;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -46,14 +44,15 @@ public class IRCPus {
     private Client client;
 
     private ConnectionConfig connectionConfig;
-    private CommandManager commandManager;
     private AccessControl accessControl;
     private NoteHandler noteHandler;
+
+    private Map<String, CommandExecutor> commandExecutors = new HashMap<>();
 
     public IRCPus(String connectionFile) {
         try {
             this.connectionConfig = new JsonConnectionConfig(connectionFile);
-        } catch(JSONException je) {
+        } catch (JSONException je) {
             log("Malformed connection config file: " + connectionFile);
             je.printStackTrace();
             System.exit(1);
@@ -78,28 +77,26 @@ public class IRCPus {
             log("Added " + s);
         }
 
-        this.accessControl = new AccessControl(this);
+        this.accessControl = new AccessControl();
         for (String s : this.connectionConfig.getAdmins()) {
             this.accessControl.addAdmin(s);
-            String fb = "Added " + s + " as an admin " + (s.startsWith("#") ? "(Channel)" : "(User)");
-            log(fb);
+            log("Added " + s + " as an admin " + (s.startsWith("#") ? "(Channel)" : "(User)"));
         }
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
         this.client.getEventManager().registerEventListener(new CommandListener(this));
         this.client.getEventManager().registerEventListener(new ConnectionListener(this));
 
-        this.commandManager = new CommandManager(this);
-        this.getCommandManager().registerCommand("ping", new PingCommand());
-        this.getCommandManager().registerCommand("note", new NoteCommand());
-        this.getCommandManager().registerCommand("whoami", new WhoAmICommand());
-        this.getCommandManager().registerCommand("join", new JoinCommand());
-        this.getCommandManager().registerCommand("part", new PartCommand());
-        this.getCommandManager().registerCommand("quit", new QuitCommand());
-        this.getCommandManager().registerCommand("help", new HelpCommand());
-        //this.getCommandManager().registerCommand("lol", e -> e.getFeedbackReceiver().sendMessage("lol"));
+        commandExecutors.put("ping", new PingCommand());
+        commandExecutors.put("note", new NoteCommand());
+        commandExecutors.put("whoami", new WhoAmICommand());
+        commandExecutors.put("join", new JoinCommand());
+        commandExecutors.put("part", new PartCommand());
+        commandExecutors.put("quit", new QuitCommand());
+        commandExecutors.put("help", new HelpCommand());
 
-        this.noteHandler = new NoteHandler(this, server + ".notes");
+
+        this.noteHandler = new NoteHandler(server + ".notes");
     }
 
     /**
@@ -108,13 +105,6 @@ public class IRCPus {
     public static void log(String msg) {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         System.out.println("[" + ts.toString().split(" ")[1].substring(0, 8) + "] " + msg); //Haha I know how terrible this is
-    }
-
-    /**
-     * @return The command manager
-     */
-    public CommandManager getCommandManager() {
-        return this.commandManager;
     }
 
     /**
@@ -138,6 +128,10 @@ public class IRCPus {
 
     public Client getClient() {
         return this.client;
+    }
+
+    public Map<String, CommandExecutor> getCommandExecutorMap() {
+        return this.commandExecutors;
     }
 
 }

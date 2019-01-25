@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2019 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -32,8 +32,8 @@ public class HelpCommand implements CommandExecutor {
     public void execute(CommandEvent event) {
         StringBuilder sb = new StringBuilder();
         sb.append("Available commands: ");
-        for (String c : event.getPus().getCommandManager().getCommands()) {
-            sb.append(c + ", ");
+        for (String c : event.getPus().getCommandExecutorMap().keySet()) {
+            sb.append(c).append(", ");
         }
         String message = sb.toString();
         event.getFeedbackReceiver().sendMessage(message.substring(0, message.length() - 2));

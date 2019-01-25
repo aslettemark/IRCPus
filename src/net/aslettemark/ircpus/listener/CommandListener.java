@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2019 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,6 +25,7 @@
 package net.aslettemark.ircpus.listener;
 
 import net.aslettemark.ircpus.IRCPus;
+import net.aslettemark.ircpus.command.CommandExecutor;
 import net.aslettemark.ircpus.event.CommandEvent;
 import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
 
@@ -38,6 +39,9 @@ public class CommandListener {
 
     @Handler
     public void onCommand(CommandEvent event) {
-        this.pus.getCommandManager().getExecutor(event.getCommand().split(" ")[0].toLowerCase()).execute(event);
+        CommandExecutor exec = this.pus.getCommandExecutorMap().get(event.getCommand().split(" ")[0].toLowerCase());
+        if (exec != null) {
+            exec.execute(event);
+        }
     }
 }

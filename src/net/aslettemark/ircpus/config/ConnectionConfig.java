@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2019 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -29,11 +29,11 @@ import java.util.Optional;
 
 public interface ConnectionConfig {
 
-    public String getIntendedNick();
-    public String getServerHostName();
-    public List<String> getIntendedChannels();
-    public List<String> getAdmins();
-    public Optional<String> getNickServUserName();
-    public Optional<String> getNickServPassword();
+    String getIntendedNick();
+    String getServerHostName();
+    List<String> getIntendedChannels();
+    List<String> getAdmins();
+    Optional<String> getNickServUserName();
+    Optional<String> getNickServPassword();
 
 }

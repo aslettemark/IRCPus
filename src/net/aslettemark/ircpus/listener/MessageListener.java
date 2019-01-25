@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2019 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -50,17 +50,15 @@ public class MessageListener {
         String message = event.getMessage();
 
         if (this.pus.getNoteHandler().hasNotes(event.getActor().getNick())) {
-            this.sendNotes(event.getActor(), event.getChannel());
+            this.sendAndConsumeNotes(event.getActor(), event.getChannel());
         }
 
         String[] triggers = {".", this.pus.getClient().getNick() + ": "};
         for (String trigger : triggers) {
             if (message.startsWith(trigger) && message.length() > trigger.length()) {
                 String command = message.replaceFirst(trigger, "");
-                if (this.pus.getCommandManager().getExecutor(command.split(" ")[0].toLowerCase()) != null) {
-                    pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), event.getChannel(), command, this.pus));
-                    break;
-                }
+                pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), event.getChannel(), command, this.pus));
+                break;
             }
         }
     }
@@ -70,12 +68,10 @@ public class MessageListener {
         IRCPus.log("MSG: <" + event.getActor().getNick() + "> " + event.getMessage());
 
         if (this.pus.getNoteHandler().hasNotes(event.getActor().getNick())) {
-            this.sendNotes(event.getActor(), event.getActor());
+            this.sendAndConsumeNotes(event.getActor(), event.getActor());
         }
 
-        if (this.pus.getCommandManager().getExecutor(event.getMessage().split(" ")[0].toLowerCase()) != null) {
-            this.pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), null, event.getMessage(), this.pus));
-        }
+        this.pus.getClient().getEventManager().callEvent(new CommandEvent(this.pus.getClient(), event.getActor(), null, event.getMessage(), this.pus));
     }
 
     @Handler
@@ -92,7 +88,7 @@ public class MessageListener {
      * @param user     The target of the notes
      * @param receiver The MessageReceiver to print the notes to
      */
-    public void sendNotes(User user, MessageReceiver receiver) {
+    private void sendAndConsumeNotes(User user, MessageReceiver receiver) {
         ArrayList<Note> notes = this.pus.getNoteHandler().getNotes(user);
         receiver.sendMessage(user.getNick() + ": You have notes!");
         if (notes.size() > 4 && user != receiver) {
@@ -101,7 +97,7 @@ public class MessageListener {
         }
         for (Note n : notes) {
             receiver.sendMessage(user.getNick() + ": " + n);
-            this.pus.getNoteHandler().removeNote(n);
+            this.pus.getNoteHandler().removeNote(n); //Consume the note
         }
     }
 }

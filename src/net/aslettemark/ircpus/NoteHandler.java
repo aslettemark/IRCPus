@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2015-2018 Aksel H. Slettemark http://aslettemark.net/
+ *  Copyright (C) 2015-2019 Aksel H. Slettemark http://aslettemark.net/
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -34,12 +34,10 @@ import java.util.List;
 
 public class NoteHandler {
 
-    private IRCPus pus;
     private String fileName;
     private List<Note> notes;
 
-    public NoteHandler(IRCPus pus, String file) {
-        this.pus = pus;
+    public NoteHandler(String file) {
         this.fileName = file;
         this.notes = this.loadNotes();
     }
@@ -54,7 +52,7 @@ public class NoteHandler {
         this.saveNotes();
     }
 
-    public void saveNotes() {
+    private void saveNotes() {
         this.wipeFile();
         try {
             final FileWriter fileWriter = new FileWriter(this.fileName);
@@ -82,7 +80,7 @@ public class NoteHandler {
         }
     }
 
-    public ArrayList<Note> loadNotes() {
+    private ArrayList<Note> loadNotes() {
         this.validateFile();
         ArrayList<Note> notes = new ArrayList<>();
         final String fileName = this.fileName;
