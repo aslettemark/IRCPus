@@ -27,7 +27,7 @@ package net.aslettemark.ircpus.listener;
 import net.aslettemark.ircpus.IRCPus;
 import net.aslettemark.ircpus.command.CommandExecutor;
 import net.aslettemark.ircpus.event.CommandEvent;
-import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Handler;
 
 public class CommandListener {
 

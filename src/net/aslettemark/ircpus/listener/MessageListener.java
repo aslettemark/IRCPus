@@ -27,13 +27,13 @@ package net.aslettemark.ircpus.listener;
 import net.aslettemark.ircpus.IRCPus;
 import net.aslettemark.ircpus.element.Note;
 import net.aslettemark.ircpus.event.CommandEvent;
+import net.engio.mbassy.listener.Handler;
 import org.kitteh.irc.client.library.element.MessageReceiver;
 import org.kitteh.irc.client.library.element.User;
 import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
 import org.kitteh.irc.client.library.event.helper.MessageEvent;
 import org.kitteh.irc.client.library.event.user.PrivateMessageEvent;
 import org.kitteh.irc.client.library.event.user.PrivateNoticeEvent;
-import org.kitteh.irc.lib.net.engio.mbassy.listener.Handler;
 
 import java.util.ArrayList;
 

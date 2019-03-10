@@ -28,6 +28,7 @@ import net.aslettemark.ircpus.IRCPus;
 import net.aslettemark.ircpus.event.CommandEvent;
 
 public class QuitCommand implements CommandExecutor {
+
     @Override
     public void execute(CommandEvent event) {
         if (!event.isPrivileged()) {

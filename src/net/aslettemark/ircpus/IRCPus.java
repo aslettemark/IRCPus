@@ -28,16 +28,16 @@ import net.aslettemark.ircpus.command.*;
 import net.aslettemark.ircpus.config.ConnectionConfig;
 import net.aslettemark.ircpus.config.JsonConnectionConfig;
 import net.aslettemark.ircpus.listener.CommandListener;
-import net.aslettemark.ircpus.listener.ConnectionListener;
 import net.aslettemark.ircpus.listener.MessageListener;
 import org.json.JSONException;
 import org.kitteh.irc.client.library.Client;
-import org.kitteh.irc.client.library.util.AcceptingTrustManagerFactory;
+import org.kitteh.irc.client.library.feature.auth.NickServ;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class IRCPus {
 
@@ -65,12 +65,24 @@ public class IRCPus {
         String nick = this.connectionConfig.getIntendedNick();
         String server = this.connectionConfig.getServerHostName();
 
-        Client.Builder builder = Client.builder();
-        builder.nick(nick);
-        builder.serverHost(server);
-        builder.secureTrustManagerFactory(new AcceptingTrustManagerFactory());
+        this.client = Client.builder()
+                .nick(nick)
+                .server()
+                .host(server)
+                .secure(true)
+                .then()
+                .buildAndConnect();
 
-        this.client = builder.build();
+        Optional<String> nsNick = this.connectionConfig.getNickServUserName();
+        Optional<String> nsPass = this.connectionConfig.getNickServPassword();
+        if (nsNick.isPresent() && nsPass.isPresent()) {
+            this.client.getAuthManager().addProtocol(
+                    NickServ.builder(client)
+                            .account(nsNick.get())
+                            .password(nsPass.get())
+                            .build()
+            );
+        }
 
         for (String s : this.connectionConfig.getIntendedChannels()) {
             this.client.addChannel(s);
@@ -85,7 +97,6 @@ public class IRCPus {
 
         this.client.getEventManager().registerEventListener(new MessageListener(this));
         this.client.getEventManager().registerEventListener(new CommandListener(this));
-        this.client.getEventManager().registerEventListener(new ConnectionListener(this));
 
         commandExecutors.put("ping", new PingCommand());
         commandExecutors.put("note", new NoteCommand());
@@ -116,14 +127,6 @@ public class IRCPus {
 
     public NoteHandler getNoteHandler() {
         return noteHandler;
-    }
-
-    public ConnectionConfig getConnectionConfig() {
-        return this.connectionConfig;
-    }
-
-    public void nickServAuth(String username, String password) {
-        this.client.sendMessage("nickserv", "identify " + username + " " + password);
     }
 
     public Client getClient() {

@@ -30,10 +30,15 @@ import java.util.Optional;
 public interface ConnectionConfig {
 
     String getIntendedNick();
+
     String getServerHostName();
+
     List<String> getIntendedChannels();
+
     List<String> getAdmins();
+
     Optional<String> getNickServUserName();
+
     Optional<String> getNickServPassword();
 
 }
